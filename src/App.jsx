@@ -26,7 +26,7 @@ const gameWon = diceObj.every(die => die.isHeld) && diceObj.every(die => die.val
     return Array.from({ length: count }, () => ({
       value: Math.floor(Math.random() * 6) + 1,
       isHeld: false,
-      id: nanoid(),
+      id: nanoid()
     }));
   }
 
@@ -43,16 +43,15 @@ const diceElement = diceObj.map(dieObj => {
 })
 
 function rollDice() {
-  if (!gameWon) {
-    setDiceObj(prevObj =>
-      prevObj.map(dice => {
-        const randomNum = Math.floor(Math.random() * 6) + 1;
-        return dice.isHeld ? dice : { ...dice, value: randomNum };
-      })
-    );
-  } else {
-    setDiceObj(generateAllNewDice());
-  }
+setDiceObj(prevObj => prevObj.map(dice => {
+   const randomNum = Math.floor(Math.random() * 6) + 1
+    if (gameWon){
+return {...dice, value: randomNum, isHeld: !dice.isHeld}
+}
+
+
+    return dice.isHeld ? dice : {...dice, value: randomNum}
+}))
 }
 
 
@@ -61,8 +60,8 @@ return (
 	<main>
 		{gameWon && <Confetti />}	  
 		<div aria-live="polite" className="sr-only">
-		   {gameWon && <p>Congratulations!, You Won! "New Game" to start again</p>}
-		</div>
+                   {gameWon && <p>Congratulations!, You Won! "New Game" to start again</p>}
+                </div>
 		<h1 className="title">Tenzies</h1>
 		<p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
 	 
